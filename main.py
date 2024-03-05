@@ -42,8 +42,12 @@ class Author(BaseModel):
 class Post(BaseModel):
     title = peewee.CharField(max_length=255, null=False, verbose_name='Title')
     post_url = peewee.CharField(max_length=255, null=False, verbose_name='Post URL')
-    category = peewee.ForeignKeyField(model=Category, null=False, verbose_name='Category')
     author = peewee.ForeignKeyField(model=Author, null=False, verbose_name='Author')
+
+
+class PostCategories(BaseModel):
+    category = peewee.ForeignKeyField(model=Category, null=False, verbose_name='Category')
+    post = peewee.ForeignKeyField(model=Post, null=False, verbose_name='Post')
 
 
 class Tag(BaseModel):
@@ -103,14 +107,15 @@ def init_database():
     try:
         database_manager.create_tables(
             models=[
-                    Category,
-                    Author,
-                    Post,
-                    Tag,
-                    PostTags,
-                    KeyWord,
-                    KeyWordResult,
-                    KeyWordResultItem,
+                Category,
+                Author,
+                Post,
+                PostCategories,
+                Tag,
+                PostTags,
+                KeyWord,
+                KeyWordResult,
+                KeyWordResultItem,
             ])
         return True
     except Exception as e:
@@ -139,8 +144,8 @@ if __name__ == "__main__":
     if not init_database():
         exit()
 
-    url = 'https://techcrunch.com/2024/03/04/anthropic-claims-its-new-models-beat-gpt-4/'
-
-    print(HtmlDownloader(url).download_page())
+    # url = 'https://techcrunch.com/2024/03/04/anthropic-claims-its-new-models-beat-gpt-4/'
+    #
+    # print(HtmlDownloader(url).download_page())
 
     # cli_args = arg_parser()
